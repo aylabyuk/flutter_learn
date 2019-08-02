@@ -1,4 +1,4 @@
-import 'package:english_words/english_words.dart' as prefix0;
+import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
 
@@ -8,9 +8,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Startup Name Generator',
       theme: ThemeData(
-        primaryColor: Colors.white,
+        primaryColor: Colors.red,
       ),
       home: RandomWords(),
     );
@@ -30,7 +31,7 @@ class RandomWordsState extends State<RandomWords> {
 
         final index = i ~/ 2;
         if (index >= _suggestions.length) {
-          _suggestions.addAll(prefix0.generateWordPairs().take(10));
+          _suggestions.addAll(generateWordPairs().take(10));
         }
 
         return _buildRow(_suggestions[index]);

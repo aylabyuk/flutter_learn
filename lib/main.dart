@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import './client_provider.dart';
+import './characters/characters_page.dart';
+import './comics/comics_page.dart';
+import './events/events_page.dart';
+import './custom_search_delegate.dart';
 
 final String GRAPHQL_ENDPOINT = 'https://api.marvelql.com/';
 
@@ -12,11 +16,11 @@ class MyApp extends StatelessWidget {
       uri: GRAPHQL_ENDPOINT,
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Marvel Characters',
+        title: 'Marvel',
         theme: ThemeData(
-          primaryColor: Colors.orange,
+          primaryColor: Colors.red,
         ),
-        home: HomePage(title: 'Marvel Characters'),
+        home: HomePage(title: 'Marvel'),
       ),
     );
   }
@@ -33,10 +37,52 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
+    return CustomScrollView(
+      slivers: <Widget>[
+        SliverAppBar(
+          floating: false,
+          title: Text(widget.title),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.search),
+              onPressed: () {
+                showSearch(
+                  context: context,
+                  delegate: CustomSearchDelegate(),
+                );
+              },
+            )
+          ],
+        ),
+        SliverFillRemaining(
+          child: DefaultTabController(
+            length: 3,
+            child: Scaffold(
+              body: TabBarView(
+                physics: NeverScrollableScrollPhysics(),
+                children: [
+                  CharactersPage(),
+                  ComicsPage(),
+                  EventsPage(),
+                ],
+              ),
+              bottomNavigationBar: new TabBar(
+                tabs: <Widget>[
+                  CharactersPage.tabItem,
+                  ComicsPage.tabItem,
+                  EventsPage.tabItem,
+                ],
+                labelColor: Colors.red,
+                unselectedLabelColor: Colors.grey,
+                indicator: UnderlineTabIndicator(
+                  borderSide: BorderSide(color: Colors.red, width: 3.0),
+                  insets: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 70.0),
+                ),
+              ),
+            ),
+          ),
+        )
+      ],
     );
   }
 }

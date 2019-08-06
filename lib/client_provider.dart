@@ -22,22 +22,29 @@ ValueNotifier<GraphQLClient> clientFor({
 }) {
   Link link = HttpLink(uri: uri);
   if (subscriptionUri != null) {
-    final WebSocketLink webSocketLink = WebSocketLink(
-        url: subscriptionUri,
-        config: SocketClientConfig(
-            autoReconnect: true, inactivityTimeout: Duration(seconds: 30)));
+    final WebSocketLink websocketLink = WebSocketLink(
+      url: subscriptionUri,
+      config: SocketClientConfig(
+        autoReconnect: true,
+        inactivityTimeout: Duration(seconds: 30),
+      ),
+    );
 
-    link = link.concat(webSocketLink);
+    link = link.concat(websocketLink);
   }
 
-  return ValueNotifier<GraphQLClient>(GraphQLClient(
-    cache: cache,
-    link: link,
-  ));
+  return ValueNotifier<GraphQLClient>(
+    GraphQLClient(
+      cache: cache,
+      link: link,
+    ),
+  );
 }
 
+/// Wraps the root application with the `graphql_flutter` client.
+/// We use the cache for all state management.
 class ClientProvider extends StatelessWidget {
-  const ClientProvider({
+  ClientProvider({
     @required this.child,
     @required String uri,
     String subscriptionUri,
@@ -51,6 +58,9 @@ class ClientProvider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GraphQLProvider(child: child, client: client);
+    return GraphQLProvider(
+      client: client,
+      child: child,
+    );
   }
 }

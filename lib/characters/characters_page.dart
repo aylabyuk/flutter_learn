@@ -6,14 +6,25 @@ class CharactersPage extends StatelessWidget {
     text: 'Characters',
   );
 
+  Widget _charsListView(BuildContext context) {
+    return ListView.builder(
+      itemBuilder: (context, index) {
+        return ListTile(
+          title: Text('row $index'),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        const ListTile(title: Text('Characters Page')),
-        // Expanded(child: ReviewFeed()),
+        Expanded(
+          child: _charsListView(context),
+        )
       ],
     );
   }

@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primaryColor: Colors.red,
         ),
-        home: HomePage(title: 'Marvel'),
+        home: HomePage(title: 'MARVEL'),
       ),
     );
   }
@@ -40,7 +40,7 @@ class _HomePageState extends State<HomePage> {
     return CustomScrollView(
       slivers: <Widget>[
         SliverAppBar(
-          floating: false,
+          floating: true,
           title: Text(widget.title),
           actions: <Widget>[
             IconButton(

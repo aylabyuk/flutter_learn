@@ -19,7 +19,9 @@ class CustomSearchDelegate extends SearchDelegate {
     return [
       IconButton(
         icon: Icon(Icons.clear),
-        onPressed: () {},
+        onPressed: () {
+          query = "";
+        },
       )
     ];
   }
@@ -31,7 +33,9 @@ class CustomSearchDelegate extends SearchDelegate {
         icon: AnimatedIcons.menu_arrow,
         progress: transitionAnimation,
       ),
-      onPressed: () {},
+      onPressed: () {
+        close(context, null);
+      },
     );
   }
 

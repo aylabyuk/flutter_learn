@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
 
 class EventsPage extends StatelessWidget {
-  static const Tab tabItem = Tab(
+  static const BottomNavigationBarItem navItem = BottomNavigationBarItem(
     icon: Icon(Icons.theaters),
-    text: 'Events',
+    title: Text('Events'),
   );
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        const ListTile(title: Text('Events Page')),
-        // Expanded(child: ReviewFeed()),
-      ],
+    return SliverList(
+      delegate: SliverChildListDelegate(
+        [
+          Container(color: Colors.blueGrey, height: 150.0),
+          Container(color: Colors.purple, height: 150.0),
+          Container(color: Colors.green, height: 150.0),
+        ],
+      ),
     );
   }
 }

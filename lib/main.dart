@@ -35,54 +35,58 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  int _selectedIndex = 0;
+
+  void _navigateTo(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
-      slivers: <Widget>[
-        SliverAppBar(
-          floating: true,
-          title: Text(widget.title),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.search),
-              onPressed: () {
-                showSearch(
-                  context: context,
-                  delegate: CustomSearchDelegate(),
-                );
-              },
-            )
-          ],
-        ),
-        SliverFillRemaining(
-          child: DefaultTabController(
-            length: 3,
-            child: Scaffold(
-              body: TabBarView(
-                physics: NeverScrollableScrollPhysics(),
-                children: [
-                  CharactersPage(),
-                  ComicsPage(),
-                  EventsPage(),
-                ],
-              ),
-              bottomNavigationBar: new TabBar(
-                tabs: <Widget>[
-                  CharactersPage.tabItem,
-                  ComicsPage.tabItem,
-                  EventsPage.tabItem,
-                ],
-                labelColor: Colors.red,
-                unselectedLabelColor: Colors.grey,
-                indicator: UnderlineTabIndicator(
-                  borderSide: BorderSide(color: Colors.red, width: 3.0),
-                  insets: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 70.0),
-                ),
-              ),
-            ),
-          ),
-        )
-      ],
+    final content = <Widget>[
+      SliverAppBar(
+        floating: true,
+        title: Text(widget.title),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () {
+              showSearch(
+                context: context,
+                delegate: CustomSearchDelegate(),
+              );
+            },
+          )
+        ],
+      ),
+    ];
+
+    switch (_selectedIndex) {
+      case 0:
+        content.add(CharactersPage());
+        break;
+      case 1:
+        content.add(ComicsPage());
+        break;
+      default:
+        content.add(EventsPage());
+    }
+
+    return Scaffold(
+      body: CustomScrollView(
+        slivers: content,
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: [
+          CharactersPage.navItem,
+          ComicsPage.navItem,
+          EventsPage.navItem,
+        ],
+        currentIndex: _selectedIndex,
+        onTap: _navigateTo,
+      ),
     );
   }
 }

@@ -20,7 +20,7 @@ ValueNotifier<GraphQLClient> clientFor({
   @required String uri,
   String subscriptionUri,
 }) {
-  Link link = HttpLink(uri: uri);
+  Link link = HttpLink(uri: uri) as Link;
   if (subscriptionUri != null) {
     final WebSocketLink websocketLink = WebSocketLink(
       url: subscriptionUri,

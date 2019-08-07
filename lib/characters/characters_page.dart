@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 
 class CharactersPage extends StatelessWidget {
   static const BottomNavigationBarItem navItem = BottomNavigationBarItem(
@@ -11,12 +12,40 @@ class CharactersPage extends StatelessWidget {
     return SliverList(
       delegate: SliverChildListDelegate(
         [
-          Container(color: Colors.red, height: 150.0),
-          Container(color: Colors.purple, height: 150.0),
-          Container(color: Colors.green, height: 150.0),
-          Container(color: Colors.red, height: 150.0),
-          Container(color: Colors.purple, height: 150.0),
-          Container(color: Colors.green, height: 150.0),
+          Query(
+            options: QueryOptions(
+              document: r'''
+                query {
+                  characters(limit: 2 offset: 10) {
+                    id
+                    thumbnail
+                    name
+                    description
+                  }
+                }
+              ''',
+            ),
+            builder: (QueryResult result, {VoidCallback refetch}) {
+              if (result.errors != null) {
+                return Text(result.errors.toString());
+              }
+
+              if (result.loading) {
+                return Center(child: Text('Loading'));
+              }
+
+              List characters = result.data['characters'];
+
+              return Column(
+                children: characters
+                    .map((character) => Container(
+                          child: Center(child: Text(character['name'])),
+                          height: 100,
+                        ))
+                    .toList(),
+              );
+            },
+          )
         ],
       ),
     );
